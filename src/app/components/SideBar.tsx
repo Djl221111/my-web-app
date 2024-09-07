@@ -11,7 +11,7 @@ function SideBar({setPageToAll, setPageToToday, setPageToFinished, setPageToAdd}
       <div className="bg-gray-200 w-64 flex flex-col p-4">
         <SearchBox/>
         <div className="flex-1">
-          <Button icon="7" label="今天" bgColor="bg-blue-600" onClick={setPageToToday}/>
+          <Button icon="7" label="最近" bgColor="bg-blue-600" onClick={setPageToToday}/>
           <Button icon="全" label="全部" bgColor="bg-gray-600" onClick={setPageToAll}/>
           <Button icon="完" label="完成" bgColor="bg-red-600" onClick={setPageToFinished}/>
         </div>

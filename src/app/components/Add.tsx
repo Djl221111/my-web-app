@@ -26,9 +26,9 @@ function Add({todos, setTodos}: AddArgs){
     return(
         <div className="flex-1 p-4 flex">
             <div className="m-auto w-2/3 h-1/2 bg-white rounded-2xl shadow-lg flex flex-col justify-center items-center space-y-2">
-            <input type="text" placeholder="请输入代办内容" className="p-2 border rounded-lg w-1/3"></input>
-            <input type="date" className="p-2 border rounded-lg w-1/3"></input>
-            <Button icon="✓" bgColor="bg-green-500" label="添加" ></Button>
+            <input type="text" placeholder="请输入代办内容" className="p-2 border rounded-lg w-1/3" onChange={setTitleOnChange}></input>
+            <input type="date" className="p-2 border rounded-lg w-1/3" onChange={setDateOnChange}></input>
+            <Button icon="✓" bgColor="bg-green-500" label="添加" onClick={addTodo}></Button>
             </div>
         </div>
     );
