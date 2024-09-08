@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-class Todo {
+class TodoHandler {
     private id: number
     private title: string
     private expireDate: number
@@ -30,12 +30,12 @@ class Todo {
     }
 
     save() {
-        Todo.addExistingId(this.id);
+        TodoHandler.addExistingId(this.id);
         typeof window !== 'undefined' ? window.localStorage.setItem(`todo/${this.id}`, JSON.stringify(this)) : null;
     }
 
     delete() {
-        Todo.deleteExistingId(this.id);
+        TodoHandler.deleteExistingId(this.id);
         typeof window !== 'undefined' ? window.localStorage.removeItem(`todo/${this.id}`) : null;
     }
 
@@ -44,8 +44,8 @@ class Todo {
         if (todo === null) {
             return null;
         }
-        const parsedTodo = JSON.parse(todo) as Todo;
-        return new Todo(parsedTodo.id, parsedTodo.title, parsedTodo.expireDate);
+        const parsedTodo = JSON.parse(todo) as TodoHandler;
+        return new TodoHandler(parsedTodo.id, parsedTodo.title, parsedTodo.expireDate);
     }
     static getNextId() {
         let latestId = typeof window !== 'undefined' ? window.localStorage.getItem("todo/latestId") : null;
@@ -94,16 +94,16 @@ class Todo {
 
 }
 
-function useTodos(): [Todo[], (todos: Todo[]) => void] {
-    const [todos, setTodos] = useState<Todo[]>([]);
+function useTodos(): [TodoHandler[], (todos: TodoHandler[]) => void] {
+    const [todos, setTodos] = useState<TodoHandler[]>([]);
 
     useEffect(() => {
-        const existingIds = Todo.getExistingIds();
-        const initialTodos = existingIds.map(id => Todo.getById(id)).filter((todo): todo is Todo => todo !== null);
+        const existingIds = TodoHandler.getExistingIds();
+        const initialTodos = existingIds.map(id => TodoHandler.getById(id)).filter((todo): todo is TodoHandler => todo !== null);
         setTodos(initialTodos);
     }, []);
 
-    const updateTodos = (newTodos: Todo[]) => {
+    const updateTodos = (newTodos: TodoHandler[]) => {
         setTodos(newTodos);
         newTodos.forEach(todo => todo.save());
     };
@@ -113,4 +113,4 @@ function useTodos(): [Todo[], (todos: Todo[]) => void] {
 }
 
 
-export { Todo, useTodos };
+export { TodoHandler, useTodos };

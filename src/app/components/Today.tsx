@@ -1,8 +1,8 @@
 'use client';
-import { Todo } from "../todo/Todo";
+import { TodoHandler} from "../todo/TodoHandler";
 import {Todo as TodoComponent} from "./Todo";
 interface TodayArgs{
-    todos: Todo[];
+    todos: TodoHandler[];
 }
 function Today({todos} : TodayArgs){
     const todosToday = todos.filter((todo,index)=>{

@@ -1,9 +1,9 @@
-import {Todo} from "../todo/Todo";
+import {TodoHandler} from "../todo/TodoHandler";
 import {Button} from"./Button";
 import {useState} from"react";
 interface AddArgs{
-    todos: Todo[];
-    setTodos: (todos: Todo[]) => void;
+    todos: TodoHandler[];
+    setTodos: (todos: TodoHandler[]) => void;
 }
 function Add({todos, setTodos}: AddArgs){
     const [title, setTitle] = useState("");
@@ -18,8 +18,8 @@ function Add({todos, setTodos}: AddArgs){
         setDate(date.getTime());
     }
     function addTodo(){
-        const nextTodoId = Todo.getNextId();
-        const todo = new Todo(nextTodoId, title, date);
+        const nextTodoId = TodoHandler.getNextId();
+        const todo = new TodoHandler(nextTodoId, title, date);
         todos.push(todo);
         setTodos(todos);
     }

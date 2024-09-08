@@ -5,7 +5,7 @@ import { Finished } from "./components/Finished";
 import { SideBar } from "./components/SideBar";
 import{ Today} from "./components/Today";
 import { useState } from "react";
-import {Todo, useTodos} from "./todo/Todo";
+import {TodoHandler, useTodos} from "./todo/TodoHandler";
 enum Page{
   TODAY,
   ALL,

@@ -4,7 +4,7 @@ interface TodoArgs{
 }
 function convertTimestampToDateString(timestamp: number){
     let date = new Date(timestamp);
-    return `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}}`;
+    return `${date.toDateString()}`;
 }
 function Todo({title,expireDate} : TodoArgs){
     return (
