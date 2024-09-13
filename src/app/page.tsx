@@ -6,6 +6,7 @@ import { SideBar } from "./components/SideBar";
 import{ Today} from "./components/Today";
 import { useState } from "react";
 import {TodoHandler, useTodos} from "./todo/TodoHandler";
+import { SearchResults } from "./components/SearchResults";
 enum Page{
   TODAY,
   ALL,
@@ -16,6 +17,8 @@ enum Page{
 export default function Home() {
   const [page, setPage] = useState(Page.TODAY);
   const [todos, setTodos] = useTodos();
+  const [openModal, setOpenModal] = useState(false);
+  const [searchedTodos, setSearchedTodos] = useState<TodoHandler[]>([]);
   function setPageToAll(){
     setPage(Page.ALL);
   }
@@ -32,11 +35,15 @@ export default function Home() {
     <main>
       <div className="bg-gray-100">
         <div className="flex h-screen">
-          <SideBar setPageToAll={setPageToAll} setPageToToday={setPageToToday} setPageToFinished={setPageToFinished} setPageToAdd={setPageToAdd}/>
+          <SideBar todos={todos} setPageToAll={setPageToAll} setPageToToday={setPageToToday} 
+          setPageToFinished={setPageToFinished} setPageToAdd={setPageToAdd} 
+          setOpenModal={setOpenModal} setSearchedTodos={setSearchedTodos}/>
+
           {page === Page.TODAY && <Today todos={todos}/>}
-          {page === Page.ALL && <All/>}
-          {page === Page.FINISHED && <Finished/>}
+          {page === Page.ALL && <All todos={todos}/>}
+          {page === Page.FINISHED && <Finished todos={todos}/>}
           {page === Page.ADD && <Add todos={todos} setTodos={setTodos}/>}
+          <SearchResults openModal={openModal} setOpenModal={setOpenModal} searchedTodos={searchedTodos}/>
         </div>
       </div>
     </main>
