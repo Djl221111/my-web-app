@@ -1,14 +1,31 @@
 import { useEffect, useState } from "react";
 
+enum TodoStatus{
+    ONGO,
+    FINISHED,
+    EXPIRED,
+    TO_BE_DELETED
+}
+
 class TodoHandler {
     private id: number
     private title: string
     private expireDate: number
+    private status: TodoStatus
 
     constructor(id: number, title: string, expireDate: number) {
         this.id = id;
         this.title = title;
         this.expireDate = expireDate;
+        this.status= TodoStatus.ONGO;
+    }
+    getStatus() {
+        return this.status;
+    }
+
+    setStatus(status: TodoStatus) {
+        this.status = status;
+        this.save();
     }
 
     getTitle() {
@@ -45,7 +62,9 @@ class TodoHandler {
             return null;
         }
         const parsedTodo = JSON.parse(todo) as TodoHandler;
-        return new TodoHandler(parsedTodo.id, parsedTodo.title, parsedTodo.expireDate);
+        const newTodo =  new TodoHandler(parsedTodo.id, parsedTodo.title, parsedTodo.expireDate);
+        newTodo.setStatus(parsedTodo.status);
+        return newTodo;
     }
     static getNextId() {
         let latestId = typeof window !== 'undefined' ? window.localStorage.getItem("todo/latestId") : null;
@@ -113,4 +132,4 @@ function useTodos(): [TodoHandler[], (todos: TodoHandler[]) => void] {
 }
 
 
-export { TodoHandler, useTodos };
+export { TodoHandler, useTodos, TodoStatus };
