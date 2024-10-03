@@ -24,9 +24,12 @@ function Todo({id, title, expireDate, status, setTodo} : TodoArgs){
             setTodo(todo)
         }
     }
+    const BASE_COLOR = "from-indigo-500 via-purple-500 to-pink-500";
+    const FINISHED_COLOR = "from-red-500 to-orange-500";
     return (
-        <div className="border rounded-md shadow-md
-        bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold p-3 h-24"
+        <div className={`border rounded-md shadow-md
+        bg-gradient-to-r ${status === TodoStatus.FINISHED ? FINISHED_COLOR : BASE_COLOR}
+        text-white font-bold p-3 hover:opacity-80 h-24`}
         onDoubleClick={handleDoubleClick}
         >
         <div> {title} </div>
