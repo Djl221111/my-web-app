@@ -1,26 +1,28 @@
 'use client';
 import { TodoHandler} from "../todo/TodoHandler";
 import {Todo as TodoComponent} from "./Todo";
+import { TodoStatus } from "../todo/TodoHandler";
 interface TodayArgs{
     todos: TodoHandler[];
+    setTodo: (todo: TodoHandler) =>void;
 }
-function Today({todos} : TodayArgs){
+function Today({todos, setTodo} : TodayArgs){
     const todosToday = todos.filter((todo, index)=>{
         const dateTodo = new Date(todo.getExpireDate());
         const dateToday = new Date(Date.now());
-        return dateTodo.toDateString()===dateToday.toDateString();
+        return dateTodo.toDateString()===dateToday.toDateString() && todo.getStatus()===TodoStatus .ONGO;
     });
     const todosTomorrow = todos.filter((todo, index)=>{
         const dateTodo = new Date(todo.getExpireDate());
         const dateToday = new Date(Date.now());
         dateToday.setDate(dateToday.getDate()+1);
-        return dateTodo.toDateString()===dateToday.toDateString();
+        return dateTodo.toDateString()===dateToday.toDateString() && todo.getStatus()===TodoStatus .ONGO;
     });
     const todosTheDayAfterTomorrow = todos.filter((todo, index)=>{
         const dateTodo = new Date(todo.getExpireDate());
         const dateToday = new Date(Date.now());
         dateToday.setDate(dateToday.getDate()+2);
-        return dateTodo.toDateString()===dateToday.toDateString();
+        return dateTodo.toDateString()===dateToday.toDateString() && todo.getStatus()===TodoStatus .ONGO;
     });
     return (
         <div className="flex-1 p-4">
@@ -32,7 +34,11 @@ function Today({todos} : TodayArgs){
                     {
                         todosToday.map((todo, index) => {
                             return(
-                                <TodoComponent key={index} title={todo.getTitle()} expireDate={todo.getExpireDate()}/>
+                                <TodoComponent key={index} title={todo.getTitle()} 
+                                expireDate={todo.getExpireDate()} status={todo.getStatus()}
+                                id={todo.getId()}
+                                setTodo={setTodo}
+                                />
                             );
                         })
                     }
@@ -43,7 +49,11 @@ function Today({todos} : TodayArgs){
                     {
                         todosTomorrow.map((todo,index)=>{
                             return (
-                                <TodoComponent key={index} title={todo.getTitle()} expireDate={todo.getExpireDate()}/>
+                                <TodoComponent key={index} title={todo.getTitle()} 
+                                expireDate={todo.getExpireDate()} status={todo.getStatus()}
+                                id={todo.getId()}
+                                setTodo={setTodo}
+                                />
                             );
                         })
                     }
@@ -54,7 +64,11 @@ function Today({todos} : TodayArgs){
                     {
                         todosTheDayAfterTomorrow.map((todo,index)=>{
                             return (
-                                <TodoComponent key={index} title={todo.getTitle()} expireDate={todo.getExpireDate()}/>
+                                <TodoComponent key={index} title={todo.getTitle()} 
+                                expireDate={todo.getExpireDate()} status={todo.getStatus()}
+                                id={todo.getId()}
+                                setTodo={setTodo}
+                                />
                             );
                         })
                     }

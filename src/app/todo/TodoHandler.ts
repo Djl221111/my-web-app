@@ -19,6 +19,10 @@ class TodoHandler {
         this.expireDate = expireDate;
         this.status= TodoStatus.ONGO;
     }
+    getId(){
+        return this.id;
+    }
+    
     getStatus() {
         return this.status;
     }

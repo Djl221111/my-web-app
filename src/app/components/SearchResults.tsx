@@ -5,8 +5,9 @@ interface SearchResultsArgs {
     searchedTodos: TodoHandler[];
     openModal: boolean;
     setOpenModal: (openModal: boolean) => void;
+    setTodo: (todo: TodoHandler) => void;
 }
-function SearchResults({searchedTodos, openModal, setOpenModal}: SearchResultsArgs){
+function SearchResults({searchedTodos, openModal, setOpenModal, setTodo}: SearchResultsArgs){
     return (
         <div onClick={()=>setOpenModal(false)}>
             <Modal isOpen={openModal}>
@@ -16,7 +17,11 @@ function SearchResults({searchedTodos, openModal, setOpenModal}: SearchResultsAr
                     {
                         searchedTodos.map((todo, index)=>{
                             return (
-                                <Todo key={index} title={todo.getTitle()} expireDate={todo.getExpireDate()}/>
+                                <Todo key={index} title={todo.getTitle()} 
+                                expireDate={todo.getExpireDate()} status={todo.getStatus()}
+                                id={todo.getId()}
+                                setTodo={setTodo}
+                                />
                             );
                         })
                     }

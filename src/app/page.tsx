@@ -7,6 +7,7 @@ import{ Today} from "./components/Today";
 import { useState } from "react";
 import {TodoHandler, useTodos} from "./todo/TodoHandler";
 import { SearchResults } from "./components/SearchResults";
+import { TodoStatus } from "./todo/TodoHandler";
 enum Page{
   TODAY,
   ALL,
@@ -19,6 +20,16 @@ export default function Home() {
   const [todos, setTodos] = useTodos();
   const [openModal, setOpenModal] = useState(false);
   const [searchedTodos, setSearchedTodos] = useState<TodoHandler[]>([]);
+  function setTodo(todo: TodoHandler){
+    const todosExcluteTodo = todos.filter((t) => t.getId() !== todo.getId());
+    if (todo.getStatus()===TodoStatus.TO_BE_DELETED){
+      todo.delete();
+    }
+    else{
+      todosExcluteTodo.push(todo);
+    }
+    setTodos(todosExcluteTodo);
+  }
   function setPageToAll(){
     setPage(Page.ALL);
   }
@@ -39,11 +50,11 @@ export default function Home() {
           setPageToFinished={setPageToFinished} setPageToAdd={setPageToAdd} 
           setOpenModal={setOpenModal} setSearchedTodos={setSearchedTodos}/>
 
-          {page === Page.TODAY && <Today todos={todos}/>}
-          {page === Page.ALL && <All todos={todos}/>}
-          {page === Page.FINISHED && <Finished todos={todos}/>}
+          {page === Page.TODAY && <Today todos={todos} setTodo={setTodo}/>}
+          {page === Page.ALL && <All todos={todos} setTodo={setTodo}/>}
+          {page === Page.FINISHED && <Finished todos={todos} setTodo={setTodo}/>}
           {page === Page.ADD && <Add todos={todos} setTodos={setTodos}/>}
-          <SearchResults openModal={openModal} setOpenModal={setOpenModal} searchedTodos={searchedTodos}/>
+          <SearchResults openModal={openModal} setOpenModal={setOpenModal} searchedTodos={searchedTodos} setTodo={setTodo}/>
         </div>
       </div>
     </main>
