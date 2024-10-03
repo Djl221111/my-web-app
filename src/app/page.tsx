@@ -20,6 +20,14 @@ export default function Home() {
   const [todos, setTodos] = useTodos();
   const [openModal, setOpenModal] = useState(false);
   const [searchedTodos, setSearchedTodos] = useState<TodoHandler[]>([]);
+  if (typeof window !== 'undefined'){
+    if (localStorage.getItem("todo/latestId")===null){
+      localStorage.setItem("todo/latestId", "0");
+    }
+    if (localStorage.getItem("todo/ids")===null){
+      localStorage.setItem("todo/ids", "[]");
+    }
+  }
   function setTodo(todo: TodoHandler){
     const todosExcluteTodo = todos.filter((t) => t.getId() !== todo.getId());
     if (todo.getStatus()===TodoStatus.TO_BE_DELETED){
