@@ -2,28 +2,22 @@
 import { TodoHandler} from "../todo/TodoHandler";
 import {Todo as TodoComponent} from "./Todo";
 import { TodoStatus } from "../todo/TodoHandler";
+import build from "next/dist/build";
 interface TodayArgs{
     todos: TodoHandler[];
     setTodo: (todo: TodoHandler) =>void;
 }
 function Today({todos, setTodo} : TodayArgs){
-    const todosToday = todos.filter((todo, index)=>{
-        const dateTodo = new Date(todo.getExpireDate());
-        const dateToday = new Date(Date.now());
-        return dateTodo.toDateString()===dateToday.toDateString() && todo.getStatus()===TodoStatus .ONGO;
-    });
-    const todosTomorrow = todos.filter((todo, index)=>{
-        const dateTodo = new Date(todo.getExpireDate());
-        const dateToday = new Date(Date.now());
-        dateToday.setDate(dateToday.getDate()+1);
-        return dateTodo.toDateString()===dateToday.toDateString() && todo.getStatus()===TodoStatus .ONGO;
-    });
-    const todosTheDayAfterTomorrow = todos.filter((todo, index)=>{
-        const dateTodo = new Date(todo.getExpireDate());
-        const dateToday = new Date(Date.now());
-        dateToday.setDate(dateToday.getDate()+2);
-        return dateTodo.toDateString()===dateToday.toDateString() && todo.getStatus()===TodoStatus .ONGO;
-    });
+    function buildPredicate(daysLater: number) {
+        return (todo: TodoHandler, index: number) => {
+            const dateTodo = new Date(todo.getExpireDate());
+            const dateToday = new Date(Date.now()+daysLater);
+            return dateTodo.toDateString() === dateToday.toDateString() && todo.getStatus() === TodoStatus.ONGO;
+        }
+    }
+    const todosToday = todos.filter(buildPredicate(0));
+    const todosTomorrow = todos.filter(buildPredicate(1));
+    const todosTheDayAfterTomorrow = todos.filter(buildPredicate(2));
     return (
         <div className="flex-1 p-4">
             <h1 className="text-blue-600 font-bold text-4xl mb-6"> 今天 </h1>
