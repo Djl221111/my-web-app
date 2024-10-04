@@ -16,6 +16,7 @@ enum Page{
 }
 
 export default function Home() {
+  //homepage
   const [page, setPage] = useState(Page.TODAY);
   const [todos, setTodos] = useTodos();
   const [openModal, setOpenModal] = useState(false);
