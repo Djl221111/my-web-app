@@ -1,31 +1,68 @@
-"use client";
-import Countdown from 'react-countdown';
-import { useWindowSize } from "react-use";
-import Confetti from "react-confetti";
+'use client';
+import { Add } from "./components/Add";
+import { All } from "./components/All";
+import { Finished } from "./components/Finished";
+import { SideBar } from "./components/SideBar";
+import{ Today} from "./components/Today";
+import { useState } from "react";
+import {TodoHandler, useTodos} from "./todo/TodoHandler";
+import { SearchResults } from "./components/SearchResults";
+import { TodoStatus } from "./todo/TodoHandler";
+enum Page{
+  TODAY,
+  ALL,
+  FINISHED,
+  ADD
+}
+
 export default function Home() {
-  const{width,height}=useWindowSize();
-  interface RendererPrams{
-    hours: number,
-    minutes: number,
-    seconds: number,
-    completed: boolean
+  const [page, setPage] = useState(Page.TODAY);
+  const [todos, setTodos] = useTodos();
+  const [openModal, setOpenModal] = useState(false);
+  const [searchedTodos, setSearchedTodos] = useState<TodoHandler[]>([]);
+  if (typeof window !== 'undefined'){
+    if (localStorage.getItem("todo/latestId")===null){
+      localStorage.setItem("todo/latestId", "0");
+    }
+    if (localStorage.getItem("todo/ids")===null){
+      localStorage.setItem("todo/ids", "[]");
+    }
   }
-  function renderer({ hours, minutes, seconds, completed } : RendererPrams){
-    if (completed){
-      return (<Confetti width={width} height={height} recycle={false} gravity={0.2}  wind={0} numberOfPieces={1000}/>);
+  function setTodo(todo: TodoHandler){
+    const todosExcluteTodo = todos.filter((t) => t.getId() !== todo.getId());
+    if (todo.getStatus()===TodoStatus.TO_BE_DELETED){
+      todo.delete();
     }
-    else {
-      const hour =(hours>=10?`${hours}`:`0${hours}`);
-      const minute = (minutes>=10?`${minutes}`:`0${minutes}`);
-      const second = (seconds>=10?`${seconds}`:`0${seconds}`);
-      return (<span className="text-8xl font-mono font-bold">{hour}:{minute}:{second}</span>);
+    else{
+      todosExcluteTodo.push(todo);
     }
+    setTodos(todosExcluteTodo);
+  }
+  function setPageToAll(){
+    setPage(Page.ALL);
+  }
+  function setPageToToday(){
+    setPage(Page.TODAY);
+  }
+  function setPageToFinished(){
+    setPage(Page.FINISHED);
+  }
+  function setPageToAdd(){
+    setPage(Page.ADD);
   }
   return (
     <main>
-      <div className="w-screen h-screen flex items-center">
-        <div className="m-auto">
-          <Countdown date={Date.now()+5000} renderer={renderer}/>
+      <div className="bg-gray-100">
+        <div className="flex h-screen">
+          <SideBar todos={todos} setPageToAll={setPageToAll} setPageToToday={setPageToToday} 
+          setPageToFinished={setPageToFinished} setPageToAdd={setPageToAdd} 
+          setOpenModal={setOpenModal} setSearchedTodos={setSearchedTodos}/>
+
+          {page === Page.TODAY && <Today todos={todos} setTodo={setTodo}/>}
+          {page === Page.ALL && <All todos={todos} setTodo={setTodo}/>}
+          {page === Page.FINISHED && <Finished todos={todos} setTodo={setTodo}/>}
+          {page === Page.ADD && <Add todos={todos} setTodos={setTodos}/>}
+          <SearchResults openModal={openModal} setOpenModal={setOpenModal} searchedTodos={searchedTodos} setTodo={setTodo}/>
         </div>
       </div>
     </main>
